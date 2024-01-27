@@ -35,8 +35,14 @@ const WorldClock = ({setTimeForTimeZone}) => {
         async function getTimeFromTimeZone() {
             const response = await fetchTimeFromTimeZone(selectedTimeZone)
             const { hours, minutes, seconds } = parsedTime(response);
-            console.info(hours, minutes, seconds);
-            setTimeForTimeZone({timerId: crypto.randomUUID(), hours, minutes, seconds, selectedTimeZone})
+            const callBackParams = {
+                timerId: crypto.randomUUID(), 
+                hours, 
+                minutes, 
+                seconds, 
+                label: `selected time zone ${selectedTimeZone}`
+            }
+            setTimeForTimeZone(callBackParams)
         }
         getTimeFromTimeZone()
     }, [selectedTimeZone])

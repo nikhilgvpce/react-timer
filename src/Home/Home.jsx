@@ -18,10 +18,36 @@ const Home = () => {
     }
 
     const setNewWorldTimer = (newTimer) => {
+        const extraProps = {
+            isCountDown: false,
+            isCountUp: true,
+            shouldStartTimer: true,
+            isReadOnly: true,
+            label: `counte-down-timer-${worldTimers.length + 1}`
+        }
         setWorldTimers([
             ...worldTimers,
-            { ...newTimer, isCountDown: false, isCountUp: true, shouldStartTimer: true, isReadOnly: true },
+            { ...newTimer, ...extraProps },
         ])
+    }
+
+    const getTimers = (timers) => {
+        return timers.map((timer) => {
+            return (
+                <>
+                    <span>{timer.label}</span>
+                    <Timer
+                        key={timer.timerId}
+                        isCountDown={timer?.isCountDown}
+                        isCountUp={timer?.isCountUp}
+                        shouldStartTimer={timer?.shouldStartTimer}
+                        hours={timer.hours}
+                        minutes={timer.minutes}
+                        seconds={timer.seconds}
+                    />
+                </>
+            )
+        })
     }
 
     return <>
@@ -30,40 +56,14 @@ const Home = () => {
         </div>
         <div className="timer-list">
             {
-                timers.map((timer) => {
-                    return (
-                        <Timer
-                            key={timer.timerId}
-                            isCountDown={timer?.isCountDown}
-                            shouldStartTimer={timer?.shouldStartTimer}
-                            hours={timer.hours}
-                            minutes={timer.minutes}
-                            seconds={timer.seconds}
-                        />
-                    )
-                })
+                getTimers(timers)
             }
         </div>
         <div className="world-clock">
             <WorldClock setTimeForTimeZone={setNewWorldTimer} />
             <div className="timer-list">
                 {
-                    worldTimers.map((timer) => {
-                        return (
-                            <>
-                                <span>selected time-zone: {timer.selectedTimeZone}</span>
-                                <Timer
-                                    key={timer.timerId}
-                                    isCountDown={timer?.isCountDown}
-                                    isCountUp={timer?.isCountUp}
-                                    shouldStartTimer={timer?.shouldStartTimer}
-                                    hours={timer.hours}
-                                    minutes={timer.minutes}
-                                    seconds={timer.seconds}
-                                />
-                            </>
-                        )
-                    })
+                    getTimers(worldTimers)
                 }
             </div>
         </div>
