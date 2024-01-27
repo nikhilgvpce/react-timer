@@ -1,4 +1,5 @@
-import { memo, useEffect, useMemo, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
+import "./Timer.css";
 import Input from "../UIComponents/Input/Input";
 
 const initialState = {
@@ -62,7 +63,7 @@ const Timer = ({ hours, minutes, seconds, isCountDown, isCountUp, shouldStartTim
                             type: 'SET_HOURS',
                             payload: currentHours
                         })
-                    } else if(currentHours == 0) {
+                    } else if (currentHours == 0) {
                         clearInterval(intervalId);
                         return;
                     }
@@ -135,11 +136,11 @@ const Timer = ({ hours, minutes, seconds, isCountDown, isCountUp, shouldStartTim
     }, [shouldStartTimer, isCountDown])
 
     return (
-        <>
+        <div className="timer-item-wrapper">
             <Input placeholder={'enter hours'} value={timer.hours} isReadOnly={isReadOnly} />
             <Input placeholder={'enter minutes'} value={timer.minutes} isReadOnly={isReadOnly} />
             <Input placeholder={'enter seconds'} value={timer.seconds} isReadOnly={isReadOnly} />
-        </>
+        </div>
 
     )
 }

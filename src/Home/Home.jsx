@@ -15,21 +15,22 @@ const Home = () => {
     }
 
     return <>
-        <FakeTimer setTimerCallback={setNewTimer} />
-        <div className="timer-wrapper">
+        <div className="fake-timer-wrapper">
+            <FakeTimer setTimerCallback={setNewTimer} />
+        </div>
+        <div className="timer-list">
             {
                 timers.map((timer) => {
                     return (
-                        <div key={timer.timerId}>
-                            <Timer
-                                timerId={timer?.timerId}
-                                isCountDown={timer?.isCountDown}
-                                shouldStartTimer={timer?.shouldStartTimer}
-                                hours={timer.hours}
-                                minutes={timer.minutes}
-                                seconds={timer.seconds}
-                            />
-                        </div>
+                        <Timer
+                            key={timer.timerId}
+                            timerId={timer?.timerId}
+                            isCountDown={timer?.isCountDown}
+                            shouldStartTimer={timer?.shouldStartTimer}
+                            hours={timer.hours}
+                            minutes={timer.minutes}
+                            seconds={timer.seconds}
+                        />
                     )
                 })
             }

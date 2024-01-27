@@ -1,3 +1,9 @@
-.timer-wrapper {
-    margin: 10px;
+.timer-list {
+    margin-left: 1%;
+}
+
+.timer-list input {
+    padding: 10px;
+    margin: 1% 1% 1% 1%;
+
 }

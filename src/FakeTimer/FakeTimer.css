@@ -1,0 +1,16 @@
+.fake-timer {
+    display: flex;
+    width: 100vw;
+}
+
+.fake-timer input, .fake-timer button {
+    padding: 10px;
+    margin: 10% 2% 2% 2%;
+}
+
+button {
+    border: 1px solid wheat;
+    border-radius: 8px;
+    background-color: steelblue;
+    color: beige;
+}

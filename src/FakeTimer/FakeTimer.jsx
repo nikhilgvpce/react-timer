@@ -1,4 +1,5 @@
 import { useState } from "react"
+import "./FakeTimer.css"
 import Input from "../UIComponents/Input/Input"
 
 export const FakeTimer = ({ setTimerCallback }) => {
@@ -11,6 +12,7 @@ export const FakeTimer = ({ setTimerCallback }) => {
     })
 
     const handleClick = () => {
+        if(!time.hours || !time.seconds || !time.minutes) return;
         setTimerCallback({
             timerId: crypto.randomUUID(),
             ...time
@@ -53,7 +55,7 @@ export const FakeTimer = ({ setTimerCallback }) => {
     ]
 
     return (
-        <div onChange={handleInputChange}>
+        <div className="fake-timer" onChange={handleInputChange}>
             {
                 inputs.map(input => <Input type={'number'} placeholder={input.placeholder} className={input.class} value={input.value} />)
             }
