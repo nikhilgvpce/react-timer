@@ -1,6 +1,6 @@
-const Input = ({type, value, onChange, placeholder}, ref) => {
+const Input = ({className, id, type, value, onChange, placeholder, isReadOnly}) => {
     return (
-        <input ref={ref} type={type} value={value} onChange={onChange} placeholder={placeholder}/>
+        <input type={type} value={value} id={id} className={className} onChange={onChange} readOnly={isReadOnly} placeholder={placeholder}/>
     )
 }
 

@@ -1,46 +1,51 @@
-import { useEffect, useReducer, useState } from "react";
+import { memo, useEffect, useMemo, useReducer, useState } from "react";
 import Input from "../UIComponents/Input/Input";
 
 const initialState = {
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
+    hours: '',
+    minutes: '',
+    seconds: '',
     totalTimeinMs: 0
 }
 
-const Timer = ({ shouldStartTimer }) => {
 
+const reducer = (state = { initialState }, action = { type: null, payload: '' }) => {
+    switch (action.type) {
+        case 'SET_HOURS':
+            return {
+                ...state,
+                hours: action.payload
+            }
+        case 'SET_MINUTES':
+            return {
+                ...state,
+                minutes: action.payload
+            }
+        case 'SET_SECONDS':
+            return {
+                ...state,
+                seconds: action.payload
+            }
+    }
+}
 
-    const reducer = (state = { initialState }, action = { type: null, payload: {} }) => {
-        switch (action.type) {
-            case 'SET_HOURS':
-                return {
-                    ...state,
-                    hours: action.payload
-                }
-            case 'SET_MINUTES':
-                return {
-                    ...state,
-                    minutes: action.payload
-                }
-            case 'SET_SECONDS':
-                return {
-                    ...state,
-                    seconds: action.payload
-                }
+const Timer = ({ hours, minutes, seconds, isCountDown, isCountUp, shouldStartTimer, isReadOnly }) => {
+
+    const getInitialState = () => {
+        return {
+            hours, minutes, seconds, isCountDown, isCountDown, shouldStartTimer
         }
     }
 
-    const [timer, dispatch] = useReducer(reducer, initialState)
+    const [timer, dispatch] = useReducer(reducer, {}, getInitialState);
 
-
-    useEffect(() => {
-        let intervalId = setInterval(() => {
-            let currentSeconds = timer.seconds;
+    const countDownTimer = () => {
+        let currentSeconds = timer.seconds;
+        let currentMinutes = timer.minutes;
+        let currentHours = timer.hours;
+        const intervalId = setInterval(() => {
             currentSeconds = currentSeconds - 1;
-            let currentMinutes = timer.minutes;
-            let currentHours = timer.hours;
-            if (currentHours === 0 && currentMinutes == 0 && currentSeconds < 0) {
+            if (timer.hours === 0 && timer.minutes == 0 && currentSeconds < 0) {
                 clearInterval(intervalId);
                 intervalId = null;
                 return;
@@ -48,66 +53,92 @@ const Timer = ({ shouldStartTimer }) => {
             if (currentSeconds < 0) {
                 currentSeconds = 59;
                 if (currentMinutes > 0) {
-                    dispatch({
-                        type: 'SET_SECONDS',
-                        payload: currentSeconds
-                    })
-                    dispatch({
-                        type: 'SET_MINUTES',
-                        payload: currentMinutes - 1
-                    })
+                    currentMinutes = currentMinutes - 1;
                 } else if (currentMinutes == 0) {
-                    currentMinutes = 59
-                    if (currentHours >= 1) {
+                    currentMinutes = 59;
+                    if (currentHours > 0) {
+                        currentHours = currentHours - 1;
                         dispatch({
                             type: 'SET_HOURS',
-                            payload: currentHours - 1
+                            payload: currentHours
                         })
-                        dispatch({
-                            type: 'SET_MINUTES',
-                            payload: currentMinutes
-                        })
-                        dispatch({
-                            type: 'SET_SECONDS',
-                            payload: currentSeconds
-                        })
+                    } else if(currentHours == 0) {
+                        clearInterval(intervalId);
+                        return;
                     }
                 }
-            } else {
                 dispatch({
-                    type: 'SET_SECONDS',
-                    payload: currentSeconds
+                    type: 'SET_MINUTES',
+                    payload: currentMinutes
                 })
             }
+            dispatch({
+                type: 'SET_SECONDS',
+                payload: currentSeconds
+            })
         }, 1000)
-    }, [shouldStartTimer])
-
-    const handleHours = (e) => {
-        dispatch({
-            type: 'SET_HOURS',
-            payload: Number(e.target.value)
-        })
+        return intervalId
     }
 
-    const handleMinutes = (e) => {
-        dispatch({
-            type: 'SET_MINUTES',
-            payload: Number(e.target.value)
-        })
+
+    const countUpTimer = () => {
+        let currentSeconds = timer.seconds;
+        let currentMinutes = timer.minutes;
+        let currentHours = timer.hours;
+        const intervalId = setInterval(() => {
+
+            currentSeconds = currentSeconds + 1;
+            if (currentSeconds == 60) {
+                currentSeconds = 0;
+                if (currentMinutes < 59) {
+                    currentMinutes = currentMinutes + 1;
+                } else if (currentMinutes == 59) {
+                    currentMinutes = 0;
+                    if (currentHours < 12) {
+                        currentHours = currentHours + 1;
+                    } else if (currentHours == 12) {
+                        currentHours = 1;
+                    }
+                    dispatch({
+                        type: 'SET_HOURS',
+                        payload: currentHours
+                    })
+                }
+                dispatch({
+                    type: 'SET_MINUTES',
+                    payload: currentMinutes
+                })
+            }
+            dispatch({
+                type: 'SET_SECONDS',
+                payload: currentSeconds
+            })
+            return intervalId;
+        }, 1000)
     }
 
-    const handleSeconds = (e) => {
-        dispatch({
-            type: 'SET_SECONDS',
-            payload: Number(e.target.value)
-        })
-    }
+
+    useEffect(() => {
+        let intervalId = null;
+        if (!shouldStartTimer) {
+            return;
+        }
+        if (isCountDown) {
+            intervalId = countDownTimer()
+        } else if (isCountUp) {
+            intervalId = countUpTimer()
+        }
+        return () => {
+            clearInterval(intervalId);
+            intervalId = null;
+        }
+    }, [shouldStartTimer, isCountDown])
 
     return (
         <>
-            <Input placeholder={'enter hours'} value={timer.hours} onChange={handleHours} />
-            <Input placeholder={'enter minutes'} value={timer.minutes} onChange={handleMinutes} />
-            <Input placeholder={'enter seconds'} value={timer.seconds} onChange={handleSeconds} />
+            <Input placeholder={'enter hours'} value={timer.hours} isReadOnly={isReadOnly} />
+            <Input placeholder={'enter minutes'} value={timer.minutes} isReadOnly={isReadOnly} />
+            <Input placeholder={'enter seconds'} value={timer.seconds} isReadOnly={isReadOnly} />
         </>
 
     )
