@@ -34,7 +34,7 @@ const Timer = ({ hours, minutes, seconds, isCountDown, isCountUp, shouldStartTim
 
     const getInitialState = () => {
         return {
-            hours, minutes, seconds, isCountDown, isCountDown, shouldStartTimer
+            hours, minutes, seconds, isCountDown, isCountUp, shouldStartTimer
         }
     }
 
@@ -44,7 +44,7 @@ const Timer = ({ hours, minutes, seconds, isCountDown, isCountUp, shouldStartTim
         let currentSeconds = timer.seconds;
         let currentMinutes = timer.minutes;
         let currentHours = timer.hours;
-        const intervalId = setInterval(() => {
+        let intervalId = setInterval(() => {
             currentSeconds = currentSeconds - 1;
             if (timer.hours === 0 && timer.minutes == 0 && currentSeconds < 0) {
                 clearInterval(intervalId);
@@ -86,7 +86,7 @@ const Timer = ({ hours, minutes, seconds, isCountDown, isCountUp, shouldStartTim
         let currentSeconds = timer.seconds;
         let currentMinutes = timer.minutes;
         let currentHours = timer.hours;
-        const intervalId = setInterval(() => {
+        let intervalId = setInterval(() => {
 
             currentSeconds = currentSeconds + 1;
             if (currentSeconds == 60) {
