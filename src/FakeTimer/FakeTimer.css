@@ -3,15 +3,35 @@
     width: 100vw;
 }
 
-.fake-timer input, .fake-timer button {
+.fake-timer input,
+.fake-timer button {
     padding: 10px;
     margin: 10% 2% 2% 2%;
 }
 
 button {
-    border: 1px solid wheat;
-    border-radius: 8px;
-    background-color: steelblue;
-    color: beige;
+    padding: 15px 25px;
+    font-size: 16px;
+    text-align: center;
     cursor: pointer;
+    outline: lightgreen;
+    color: #fff;
+    background-color: #04AA6D;
+    border: 0.5px solid;
+    border-radius: 15px;
+    box-shadow: 0 2px #999;
+}
+
+button:hover {
+    background-color: #3e8e41
+}
+
+button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+button:focus {
+    box-shadow: none
 }

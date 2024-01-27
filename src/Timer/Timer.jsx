@@ -95,10 +95,10 @@ const Timer = ({ hours, minutes, seconds, isCountDown, isCountUp, shouldStartTim
                     currentMinutes = currentMinutes + 1;
                 } else if (currentMinutes == 59) {
                     currentMinutes = 0;
-                    if (currentHours < 12) {
+                    if (currentHours == 24) {
+                        currentHours = 0;
+                    } else {
                         currentHours = currentHours + 1;
-                    } else if (currentHours == 12) {
-                        currentHours = 1;
                     }
                     dispatch({
                         type: 'SET_HOURS',

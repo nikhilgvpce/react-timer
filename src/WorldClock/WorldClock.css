@@ -1,0 +1,11 @@
+select {
+    width: 25vw;
+    margin: 2%;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: white;
+}
+
+option {
+    padding: 2%;
+}

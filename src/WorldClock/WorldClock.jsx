@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./WorldClock.css"
 
 const fetchTimeFromTimeZone = async (timezone) => {
     const url = "https://worldtimeapi.org/api/timezone/";
@@ -16,7 +17,7 @@ const fetchTimeFromTimeZone = async (timezone) => {
 const parsedTime = (worldTime) => {
     const [hours, minutes, seconds] = worldTime.split('T')[1].split('.')[0].split(':');
     return {
-        hours: +hours > 12 ? +hours - 12 : +hours,
+        hours: +hours,
         minutes: +minutes,
         seconds: +seconds
     }
@@ -35,7 +36,7 @@ const WorldClock = ({setTimeForTimeZone}) => {
             const response = await fetchTimeFromTimeZone(selectedTimeZone)
             const { hours, minutes, seconds } = parsedTime(response);
             console.info(hours, minutes, seconds);
-            setTimeForTimeZone({timerId: crypto.randomUUID(), hours, minutes, seconds})
+            setTimeForTimeZone({timerId: crypto.randomUUID(), hours, minutes, seconds, selectedTimeZone})
         }
         getTimeFromTimeZone()
     }, [selectedTimeZone])
@@ -57,7 +58,8 @@ const WorldClock = ({setTimeForTimeZone}) => {
     }
     return (
         <>
-            <label for="timezon-select">Choose a timezone:</label>
+            <hr></hr>
+            <label for="timezone-select">Choose a timezone:</label>
             <select onChange={handleTimeZoneChange} value={selectedTimeZone}>
                 <option value="">--Please choose an option--</option>
                 {

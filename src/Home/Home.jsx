@@ -50,15 +50,18 @@ const Home = () => {
                 {
                     worldTimers.map((timer) => {
                         return (
-                            <Timer
-                                key={timer.timerId}
-                                isCountDown={timer?.isCountDown}
-                                isCountUp={timer?.isCountUp}
-                                shouldStartTimer={timer?.shouldStartTimer}
-                                hours={timer.hours}
-                                minutes={timer.minutes}
-                                seconds={timer.seconds}
-                            />
+                            <>
+                                <span>selected time-zone: {timer.selectedTimeZone}</span>
+                                <Timer
+                                    key={timer.timerId}
+                                    isCountDown={timer?.isCountDown}
+                                    isCountUp={timer?.isCountUp}
+                                    shouldStartTimer={timer?.shouldStartTimer}
+                                    hours={timer.hours}
+                                    minutes={timer.minutes}
+                                    seconds={timer.seconds}
+                                />
+                            </>
                         )
                     })
                 }
