@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./WorldClock.css"
+import LoadingScreen from "../Loader/Loader";
 
 const fetchTimeFromTimeZone = async (timezone) => {
     const url = "https://worldtimeapi.org/api/timezone/";
@@ -28,11 +29,13 @@ const WorldClock = ({setTimeForTimeZone}) => {
 
     const [selectedTimeZone, setSelectedTimeZone] = useState('');
     const [timezoneOptions, setTimezoneOptions] = useState([]);
+    const [isLoading, setLoading] = useState(false)
 
 
     useEffect(() => {
         if (!selectedTimeZone) return;
         async function getTimeFromTimeZone() {
+            setLoading(true)
             const response = await fetchTimeFromTimeZone(selectedTimeZone)
             const { hours, minutes, seconds } = parsedTime(response);
             const callBackParams = {
@@ -43,6 +46,7 @@ const WorldClock = ({setTimeForTimeZone}) => {
                 label: `selected time zone ${selectedTimeZone}`
             }
             setTimeForTimeZone(callBackParams)
+            setLoading(false)
         }
         getTimeFromTimeZone()
     }, [selectedTimeZone])
@@ -65,8 +69,9 @@ const WorldClock = ({setTimeForTimeZone}) => {
     return (
         <>
             <hr></hr>
+            <LoadingScreen isLoading={isLoading} />
             <label for="timezone-select">Choose a timezone:</label>
-            <select onChange={handleTimeZoneChange} value={selectedTimeZone}>
+            <select disabled={isLoading} onChange={handleTimeZoneChange} value={selectedTimeZone}>
                 <option value="">--Please choose an option--</option>
                 {
                     timezoneOptions.map((timezone) => {

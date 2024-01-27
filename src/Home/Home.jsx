@@ -11,9 +11,16 @@ const Home = () => {
     const [worldTimers, setWorldTimers] = useState([]);
 
     const setNewTimer = (newTimer) => {
+        const extraProps = {
+            isCountDown: true,
+            isCountUp: false,
+            shouldStartTimer: true,
+            isReadOnly: true,
+            label: `count-down-timer-${timers.length + 1}`
+        }
         setTimers([
             ...timers,
-            { ...newTimer, isCountDown: true, shouldStartTimer: true, isReadOnly: true },
+            { ...newTimer, ...extraProps },
         ])
     }
 
@@ -23,7 +30,6 @@ const Home = () => {
             isCountUp: true,
             shouldStartTimer: true,
             isReadOnly: true,
-            label: `counte-down-timer-${worldTimers.length + 1}`
         }
         setWorldTimers([
             ...worldTimers,
